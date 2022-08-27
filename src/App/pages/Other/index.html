@@ -340,3 +340,35 @@ sips -z 1024 1024   pic.png --out tmp.iconset/icon_512x512@2x.png
 <pre ui-code>
     iconutil -c icns tmp.iconset -o Icon.icns
 </pre>
+<h3 id='fixed-git'>
+    git
+</h3>
+<h4 id='fixed-git-nolog'>
+    如何清空所有的提交记录?
+</h4>
+<p>
+    首先，创建一个没有提交记录的分支，比如：
+</p>
+<pre ui-code>
+    git checkout --orphan newBranch
+</pre>
+<p>
+    然后，提交此分支到本地：
+</p>
+<pre ui-code>
+git add -A
+git commit -m 清空历史记录
+</pre>
+<p>
+    删除原来的分支后把当前分支改为原来分支的名字（假设原来分支叫master）：
+</p>
+<pre ui-code>
+git branch -D master
+git branch -m master
+</pre>
+<p>
+    最后，推送到服务器即可：
+</p>
+<pre ui-code>
+    git push -f origin master
+</pre>
