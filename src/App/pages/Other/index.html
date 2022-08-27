@@ -1,0 +1,342 @@
+<h2 id='fixed-top'>
+    其它
+</h2>
+<h3 id='fixed-nrm'>
+    NRM
+</h3>
+<p>
+    安装
+</p>
+<pre ui-code>
+    npm install -g nrm
+</pre>
+<p>
+    查看
+</p>
+<pre ui-code>
+    nrm ls
+</pre>
+<p>
+    使用
+</p>
+<pre ui-code>
+    nrm use xxx
+</pre>
+<p>
+    新增
+</p>
+<pre ui-code>
+    nrm add xxx url
+</pre>
+<p>
+    删除
+</p>
+<pre ui-code>
+    nrm del xxx
+</pre>
+<h3 id='fixed-vue.config.js'>
+    vue.config.js
+</h3>
+<pre ui-code>
+{
+
+    publicPath: './',
+
+    // 构建好的文件输出到哪里
+    outputDir: "dist",
+
+    // 需要babel转义的包可以在这里进行登记
+    transpileDependencies: [],
+
+    // 是否在构建生产包时生成SourceMap文件
+    productionSourceMap: false,
+
+    // 使用带有浏览器内编译器的完整构建版本
+    runtimeCompiler: false,
+
+    // 打包后的文件名是否需要带hash
+    filenameHashing: true,
+
+    devServer: {
+        host: "0.0.0.0",
+        port: 20000,
+    },
+
+    configureWebpack: (config) => {
+        config.module.rules.push({
+        test: /\.clunch$/,
+        use: [{
+            loader: 'clunch/loader.js'
+        }]
+        })
+    }
+}
+</pre>
+<h3 id='fixed-vi'>
+    vi命令
+</h3>
+<p>
+    首先，我们需要知道vi（或vim，下同）有三种模式：编辑模式、底行模式和命令行模式。
+</p>
+<h4>
+    模式间切换
+</h4>
+<p>
+    在任何情况下，按ESC都可以切换到命令行模式，而在命令行模式，输入冒号:会进入底行模式，输入字母i会进入编辑模式。
+</p>
+<p>
+    编辑模式下就是普通的文本输入，没有什么特殊的，下面主要说明另外二种模式下的一些命令。
+</p>
+<h4>
+    底行模式
+</h4>
+<p>
+    常用的命令就几种，分别是:q（退出）、:q!（强制退出）、:wq（保存后退出）、和:w（保存）。
+</p>
+<h4>
+    命令行模式
+</h4>
+<p>
+    该模式下的命令可以帮助你快速开发，不过不是必须的，下面列出几个常用的：
+</p>
+<ol>
+    <li>
+        dd:删除一行
+    </li>
+    <li>
+        u:撤消修改或删除操作
+    </li>
+    <li>
+        yy:复制光标所在行到缓冲区
+    </li>
+    <li>
+        p:将缓冲区内的字符贴到光标所在位置
+    </li>
+</ol>
+<h3 id='fixed-svn'>
+    SVN
+</h3>
+<h4>
+    初始化
+</h4>
+<p>
+    把uri指定的仓库代码检出到本地来：
+</p>
+<pre ui-code>
+    svn checkout url
+</pre>
+<p>
+    更新代码：
+</p>
+<pre ui-code>
+    svn up
+</pre>
+<p>
+    清理：
+</p>
+<pre ui-code>
+    svn cleanup
+</pre>
+<h4>
+    状态查询
+</h4>
+<p>
+    查看当前工作区的状态：
+</p>
+<pre ui-code>
+    svn status
+</pre>
+<p>
+    查看svn信息：
+</p>
+<pre ui-code>
+    svn info
+</pre>
+<h4>
+    提交
+</h4>
+<p>
+    添加新文件到版本库：
+</p>
+<pre ui-code>
+    svn add filename
+</pre>
+<p>
+    递归添加当前目录下的所有新文件：
+</p>
+<pre ui-code>
+    svn add . --no-ignore --force
+</pre>
+<p>
+    提交代码（只有新文件需要add,修改文件可以直接提交）：
+</p>
+<pre ui-code>
+    svn commit -m "提交描述"
+</pre>
+<h4>
+    忽略或删除
+</h4>
+<p>
+    已经通过add添加到仓库的文件，如果想删除，需要执行下面命令回退到unversioned状态：
+</p>
+<pre ui-code>
+    svn revert file --depth infinity
+</pre>
+<h3 id='fixed-nginx'>
+    Nginx
+</h3>
+<h4 id='fixed-nginx-session'>
+    session丢失问题
+</h4>
+<h5>
+    发生情况
+</h5>
+<p>
+    转发的时候，如果只是host、端口转换，则session不会丢失，如果路径也变化了，则需要设置cookie的路径转换，不然session会发生丢失。
+</p>
+<h5>
+    解决方案
+</h5>
+<p>
+    通过设置cookie的路径转换就可以解决了，具体例子如下：
+</p>
+<pre ui-code>
+location /pre-url/ {
+    proxy_pass http://serverProxy/new-url;
+    proxy_cookie_path  /new-url /pre-url;
+}
+</pre>
+<h4 id='fixed-nginx-config'>
+    配置文件说明
+</h4>
+<pre ui-code>
+#定义Nginx运行的用户和用户组
+#user  nobody;
+
+#nginx进程数，建议设置为等于CPU总核心数。
+worker_processes  1;
+
+#全局错误日志
+error_log   /Users/yelloxing/nginxConfig/error_debug.log  debug;
+error_log   /Users/yelloxing/nginxConfig/error_notice.log  notice;
+error_log   /Users/yelloxing/nginxConfig/error_info.log  info;
+error_log   /Users/yelloxing/nginxConfig/error_warn.log  warn;
+error_log   /Users/yelloxing/nginxConfig/error_error.log  error;
+error_log   /Users/yelloxing/nginxConfig/error_crit.log  crit;
+
+#进程文件
+pid       /Users/yelloxing/nginxConfig/nginx.pid;
+
+events {
+    #单个进程最大连接数（最大连接数=连接数*进程数）
+    worker_connections  256;
+}
+
+#设定http服务器，利用它的反向代理功能提供负载均衡支持
+http {
+
+    #文件扩展名与文件类型映射表
+    include      /Users/yelloxing/nginxConfig/mime.types;
+
+    #默认文件类型
+    default_type  application/octet-stream;
+
+    #默认编码
+    #charset utf-8;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '"$request_body" $body_bytes_sent $status ';
+
+    #sendfile指令指定 nginx 是否调用sendfile 函数来输出文件，对于普通应用，必须设为on。
+    #如果用来进行下载等应用磁盘IO重负载应用，可设置为off，以平衡磁盘与网络IO处理速度，降低系统uptime。
+    sendfile        on;
+
+    #长连接超时时间，单位是秒
+    keepalive_timeout  65;
+
+    #预定义的第一个请求数据的地址
+    upstream localJsonProxy {
+        server 127.0.0.1:30000;
+    }
+
+    #负载均衡配置简单例子
+    #upstream serverName {
+    #    server 192.168.0.14 weight=10;
+    #    server 192.168.0.15 weight=10;
+    #}
+
+    #预定义的第二个请求数据的地址
+    upstream serverProxy {
+        server 192.168.0.16:20000;
+    }
+
+    #虚拟主机的配置
+    server {
+
+        #监听端口
+        listen       8080;
+        #域名可以有多个，用空格隔开
+        server_name  localhost;
+        access_log  /Users/yelloxing/nginxConfig/host.access.log main;
+
+        #---1
+        location / {
+            root  /Users/yelloxing/-------/source/;
+            index  index.html;
+        }
+
+        #---2
+        location /server/ {
+            proxy_pass http://serverProxy/server/;
+            proxy_redirect          off;
+        }
+
+        #---3
+        location /local/ {
+            rewrite ^(.*).do$ $1.json last;
+            proxy_pass http://localJsonProxy/;
+            proxy_redirect          off;
+        }
+    }
+
+    #虚拟主机的配置（这里是对应上面的『预定义的第一个请求数据的地址』）
+    server {
+        listen       30000;
+        server_name  dataServer;
+        access_log  /Users/yelloxing/nginxConfig/data.access.log main;
+
+        location ~ (.*\.json) {
+            root   /Users/yelloxing/-------/source/data;
+            default_type application/json;
+            error_page 405 =200 $1;
+        }
+    }
+}
+</pre>
+<h3 id='fixed-icns'>
+    icns 制作教程
+</h3>
+<p>
+    桌面创建个文件夹，命名如：icon，我们就在这个文件夹里面进行操作。
+</p>
+<p>
+    把源文件，拖进这个文件夹，命名为pic.png，同时，在此文件夹中创建一个文件夹tmp.iconset，然后，在icon目录下执行下面命令：
+</p>
+<pre ui-code>
+sips -z 16 16     pic.png --out tmp.iconset/icon_16x16.png
+sips -z 32 32     pic.png --out tmp.iconset/icon_16x16@2x.png
+sips -z 32 32     pic.png --out tmp.iconset/icon_32x32.png
+sips -z 64 64     pic.png --out tmp.iconset/icon_32x32@2x.png
+sips -z 128 128   pic.png --out tmp.iconset/icon_128x128.png
+sips -z 256 256   pic.png --out tmp.iconset/icon_128x128@2x.png
+sips -z 256 256   pic.png --out tmp.iconset/icon_256x256.png
+sips -z 512 512   pic.png --out tmp.iconset/icon_256x256@2x.png
+sips -z 512 512   pic.png --out tmp.iconset/icon_512x512.png
+sips -z 1024 1024   pic.png --out tmp.iconset/icon_512x512@2x.png
+</pre>
+<p>
+    执行完毕后，再用下面的命令即可生成icns文件:
+</p>
+<pre ui-code>
+    iconutil -c icns tmp.iconset -o Icon.icns
+</pre>
